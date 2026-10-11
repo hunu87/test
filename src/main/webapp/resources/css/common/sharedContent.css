@@ -1,0 +1,10 @@
+/* 공통 컨텐츠 스타일 — 화면별 차이는 [data-mode] 로 지정 */
+.shared-content { margin: 16px 0; }
+.shared-content__search { margin-bottom: 8px; }
+.shared-content__table { width: 100%; border-collapse: collapse; }
+.shared-content__table th,
+.shared-content__table td { border: 1px solid #ddd; padding: 6px 8px; }
+.shared-content__table tbody tr { cursor: pointer; }
+.shared-content__footer { margin-top: 8px; text-align: right; }
+
+.shared-content[data-mode="B"] tr.is-new { background: #fff8e1; }
