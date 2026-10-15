@@ -40,3 +40,19 @@ src/main/webapp
 3. 중복 JS 함수를 `SharedContent` 의 `Instance.prototype` 로 이동하고, 셀렉터를 `this.$('role')` 로 교체.
 4. 화면마다 다른 함수 본문은 `hooks` 로 빼서 `screenA.js` / `screenB.js` 에서 주입.
 5. 한 화면씩 교체하고 동작 확인 후 기존 중복 코드 삭제.
+
+## 로딩바 (CSS 전용) — `css/common/loadingBar.css`
+
+애니메이션은 CSS만으로 동작합니다. JS는 표시/숨김 속성만 바꿉니다.
+
+```html
+<!-- 1) 단독 로딩바: 원하는 위치에 두고, 숨길 땐 hidden -->
+<div class="loading-bar"></div>
+<div class="loading-bar loading-bar--top" hidden></div>   <!-- 화면 최상단 고정 -->
+
+<!-- 2) 영역 로딩바: aria-busy="true" 동안 상단에 로딩바 + 내용 흐림/클릭 차단 -->
+<div class="loading-area" aria-busy="true">...</div>
+```
+
+- 공통 목록(`sharedContent`)은 이미 `loading-area` 가 적용되어 있어, `search()` 중 자동으로 표시됩니다.
+- 색/두께 변경: `--loading-bar-color`, `--loading-bar-track`, `--loading-bar-height`, `--loading-bar-duration`

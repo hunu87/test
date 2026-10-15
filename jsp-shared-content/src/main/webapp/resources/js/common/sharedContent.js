@@ -109,6 +109,8 @@ var SharedContent = (function () {
             init.body = JSON.stringify(params);
         }
 
+        this.root.setAttribute('aria-busy', 'true'); // 로딩바 표시 (loadingBar.css)
+
         return fetch(url, init)
             .then(function (res) { return res.json(); })
             .then(function (data) {
@@ -116,7 +118,11 @@ var SharedContent = (function () {
                 if (self.hooks.afterSearch) self.hooks.afterSearch.call(self, self.items, data);
                 return data;
             })
-            .catch(function (err) { console.error('[SharedContent] search failed', err); });
+            .catch(function (err) { console.error('[SharedContent] search failed', err); })
+            .then(function (data) {
+                self.root.setAttribute('aria-busy', 'false'); // 성공/실패 모두 로딩바 숨김
+                return data;
+            });
     };
 
     Instance.prototype.render = function (list) {

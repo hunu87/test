@@ -1,0 +1,76 @@
+/**
+ * 로딩바 (CSS 전용, 이미지/라이브러리 없음)
+ *
+ * 1) 단독 로딩바 — 원하는 위치에 요소 하나를 둔다.
+ *      <div class="loading-bar"></div>
+ *      <div class="loading-bar loading-bar--top" hidden></div>   ← 화면 최상단 고정
+ *    숨길 때는 hidden 속성만 붙이면 된다.
+ *
+ * 2) 영역 로딩바 — 영역 상단에 로딩바가 붙고, 내용은 흐려지며 클릭이 막힌다.
+ *      <div class="loading-area" aria-busy="true"> ... </div>
+ *    aria-busy="true" 일 때만 표시된다 (스크린리더에도 "로딩 중" 으로 전달됨).
+ *
+ * 색/두께는 CSS 변수로 화면별 변경 가능
+ *      .my-screen { --loading-bar-color: #e53935; --loading-bar-height: 4px; }
+ */
+:root {
+    --loading-bar-color: #1976d2;
+    --loading-bar-track: rgba(25, 118, 210, .15);
+    --loading-bar-height: 3px;
+    --loading-bar-duration: 1.2s;
+}
+
+/* 막대 모양: 트랙(배경색) 위를 40% 길이의 막대(그라데이션)가 왼쪽 → 오른쪽으로 반복 이동 */
+.loading-bar,
+.loading-area[aria-busy="true"]::before {
+    height: var(--loading-bar-height);
+    background-color: var(--loading-bar-track);
+    background-image: linear-gradient(var(--loading-bar-color), var(--loading-bar-color));
+    background-repeat: no-repeat;
+    background-size: 40% 100%;
+    animation: loading-bar-slide var(--loading-bar-duration) ease-in-out infinite;
+}
+
+/* background-position % = (영역폭 - 막대폭) 기준 → -66.67% 는 막대가 왼쪽 밖, 166.67% 는 오른쪽 밖 */
+@keyframes loading-bar-slide {
+    from { background-position: -66.67% 0; }
+    to   { background-position: 166.67% 0; }
+}
+
+.loading-bar { display: block; width: 100%; }
+.loading-bar[hidden] { display: none; }
+
+/* 화면 최상단 고정 */
+.loading-bar--top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+}
+
+/* 영역 로딩바 */
+.loading-area { position: relative; }
+
+.loading-area[aria-busy="true"]::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.loading-area[aria-busy="true"] > * {
+    opacity: .5;
+    pointer-events: none;
+    transition: opacity .2s;
+}
+
+/* 움직임 최소화 설정 사용자: 멈추지 않고 천천히만 이동 (로딩 중이라는 표시는 유지) */
+@media (prefers-reduced-motion: reduce) {
+    .loading-bar,
+    .loading-area[aria-busy="true"]::before {
+        animation-duration: 3s;
+    }
+}

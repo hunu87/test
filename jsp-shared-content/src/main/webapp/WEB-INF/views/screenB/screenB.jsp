@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>화면 B</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/sharedContent.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common/loadingBar.css">
 </head>
 <body data-context-path="${pageContext.request.contextPath}">
 
